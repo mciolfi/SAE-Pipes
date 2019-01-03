@@ -26,7 +26,7 @@ def arq(name, ndata, types):
 
 
 # Main program
-from numpy import exp, array, random, dot, square
+from numpy import exp, array, random, dot, square, log
 from numpy.linalg import inv
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
@@ -49,14 +49,18 @@ for count in range(len(listt)): # Convert the data string in values
     #plt.subplot(222)
     #plt.plot(x2, y, 'r^', label = 'deep')
 y = array(y)
-x = [one, x1, square(x1), x2, square(x2)]
+x = [one, x1, log(x1), x2, square(x2)]
 x = array(x).T # Adaptating the matrix direction
 beta = dot(inv(dot(x.T,x)),dot(x.T,y))
 # Testing the results of beta
-# For lenght = 19 mm and diameter of 4.34 mm 
-test1 = [1, 19, 19**2, 4.34, 4.34**2]
-result1 = dot(test1,beta)
-print (result1)
+# For lenght = 19 mm and diameter of 4.34 mm
+print ('bias', 'x^lenght', 'diameter', 'diameter^2',beta)
+for lenght in [1.5, 3, 19]:
+    for dia in [4.5, 4.36, 4.15]:
+    #[(0, 4.77), (1.5, 4.5), (3, 4.36), (19, 4.15)]:
+        test1 = [1, x1, log(lenght), dia, square(dia)]
+        result1 = dot(test1,beta)
+        print (lenght, dia, result1)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
