@@ -10,6 +10,7 @@ __username__ = 'mciolfi'
 __description__ = 'Polynomial Regression using Pression dataset'
 __status__ = 'Development'
 
+
 # Open dataset
 def arq(name, ndata, types):
     import csv
@@ -18,7 +19,7 @@ def arq(name, ndata, types):
     with open(name, newline='') as csvfile:  # csv module will detect new lines
         if types == ' ':  text = csv.reader(csvfile, delimiter=' ')  # classify by space
         if types == ',':  text = csv.reader(csvfile, delimiter=',')  # classify by comma
-        if types == '\t': text = csv.reader(csvfile, delimiter='\t') # classify by tab
+        if types == '\t': text = csv.reader(csvfile, delimiter='\t')  # classify by tab
         for line in text:
             for t in range(len(line) - ndata): line.remove('')  # Removes zeros inside data
             listt.append(line)  # Define listt as the data inside file
@@ -32,63 +33,62 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 listt = array(arq('pressures.dat', 3, '\t'))  # Define listt as the data inside the file
-x1 = [] # Set variables x1, x2 and y as matrix
+# Set variables x1, x2 and y as matrix
+x1 = []
 x2 = []
 y = []
 one = []
-#plt.xlabel('pressure')
-#plt.ylabel('length')
-#plt.semilogy()
-for count in range(len(listt)): # Convert the data string in values
+# plt.xlabel('pressure')
+# plt.ylabel('length')
+# plt.semilogy()
+for count in range(len(listt)):  # Convert the data string in values
     x1.append(float(listt[count][0]))
     x2.append(float(listt[count][1]))
     y.append([int(listt[count][2])])
     one.append(1)
-    #plt.subplot(221)
-    #plt.plot(x1, y, 'go', label = 'lenght')
-    #plt.subplot(222)
-    #plt.plot(x2, y, 'r^', label = 'deep')
+    # plt.subplot(221)
+    # plt.plot(x1, y, 'go', label = 'lenght')
+    # plt.subplot(222)
+    # plt.plot(x2, y, 'r^', label = 'deep')
+# Define x value and beta and turn variables as array
 y = array(y)
 x = [one, x1, log(x1), x2, square(x2)]
-x = array(x).T # Adaptating the matrix direction
-beta = dot(inv(dot(x.T,x)),dot(x.T,y))
-# Testing the results of beta
-# For lenght = 19 mm and diameter of 4.34 mm
-print ('bias', 'x^lenght', 'diameter', 'diameter^2',beta)
+x = array(x).T  # Adaptating the matrix direction
+beta = dot(inv(dot(x.T, x)), dot(x.T, y))
+# Testing the results of beta with sample
+print('f(pipe) =', int(beta[0]), '+', int(beta[1]), '* lenght +', int(beta[2]), '* ln(lenght) +', int(beta[3]), '* diameter +', int(beta[4]), '* diameter^2')
+print('beta = ',beta.T)
 for lenght in [1.5, 3, 19]:
     for dia in [4.5, 4.36, 4.15]:
-    #[(0, 4.77), (1.5, 4.5), (3, 4.36), (19, 4.15)]:
-        test1 = [1, x1, log(lenght), dia, square(dia)]
-        result1 = dot(test1,beta)
-        print (lenght, dia, result1)
+        test1 = [1, lenght, log(lenght), dia, square(dia)]
+        result1 = dot(test1, beta)
+        print(lenght, dia, result1)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-#Axes3D.plot_wireframe(x1, x2, y)
+#Axes3D.plot_wireframe(Axes3D,x1,x2,y)
 #Axes3D.plot(x1, x2, y)
-
-ax.set_xlabel('diameter [mm]',color='b')
-ax.set_ylabel('lenght [mm]',color='r')
-ax.set_zlabel('Pressure [bar]')
-ax.scatter(x2, x1, y, c='g', marker='^')
-ax.plot(x1, x2, y)
-plt.show()
-
-#"""fig, ax1 = plt.subplots()
-#plt.grid(True)
-#ax1.plot(x2, y, 'b.')
-#ax1.set_ylabel('pressure [bar]')
-# Make the y-axis label, ticks and tick labels match the line color.
-#ax1.set_xlabel('diameter [mm]', color='b')
-#ax1.tick_params('x', colors='b')
-
-#ax2 = ax1.twiny()
-#ax2.plot(x1, x2, y, 'r.')
-#ax2.set_xlabel('lenght [mm]', color='r')
-#ax2.tick_params('x', colors='r')
-#plt.legend(('lenght', 'deep'),
-#           shadow=True, loc=(0.01, 0.48), handlelength=1.5, fontsize=16)
-
-#fig.tight_layout()
+#ax.set_xlabel('diameter [mm]', color='b')
+#ax.set_ylabel('lenght [mm]', color='r')
+#ax.set_zlabel('Pressure [bar]')
+#ax.scatter(x2, x1, y, c='g', marker='^')
+#ax.plot(x1, x2, y)
 #plt.show()
 
+# """fig, ax1 = plt.subplots()
+# plt.grid(True)
+# ax1.plot(x2, y, 'b.')
+# ax1.set_ylabel('pressure [bar]')
+# Make the y-axis label, ticks and tick labels match the line color.
+# ax1.set_xlabel('diameter [mm]', color='b')
+# ax1.tick_params('x', colors='b')
+
+# ax2 = ax1.twiny()
+# ax2.plot(x1, x2, y, 'r.')
+# ax2.set_xlabel('lenght [mm]', color='r')
+# ax2.tick_params('x', colors='r')
+# plt.legend(('lenght', 'deep'),
+#           shadow=True, loc=(0.01, 0.48), handlelength=1.5, fontsize=16)
+
+# fig.tight_layout()
+# plt.show()
