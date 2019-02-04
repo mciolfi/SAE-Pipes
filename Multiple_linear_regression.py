@@ -7,7 +7,7 @@ __email__ = 'ciolfi@gmail.com'
 __course__ = 'SAE2019'
 __date__ = '2019/01/02'
 __username__ = 'mciolfi'
-__description__ = 'Multiple linear regressionusing Pression non zeros dataset'
+__description__ = 'Multiple linear regression using Pression non zeros dataset'
 __status__ = 'Production'
 
 
